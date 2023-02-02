@@ -55,7 +55,7 @@ function makeHtmlBoard() {
   top.addEventListener('click', this.handleClick);
   
 
-  for (let x = 0; x < WIDTH; x++) {
+  for (let x = 0; x < this.WIDTH; x++) {
     const headCell = document.createElement('td');
     headCell.setAttribute('id', x);
     top.append(headCell);
@@ -93,7 +93,7 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
-  // piece.classList.add(`p${currPlayer}`);
+  piece.classList.add(`p${this.currPlayer}`);
   piece.style.top = -50 * (y + 2);
 
   const spot = document.getElementById(`${y}-${x}`);
@@ -121,21 +121,22 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  board[y][x] = currPlayer;
-  placeInTable(y, x);
+  this.board[y][x] = this.currPlayer;
+  this.placeInTable(y, x);
   
   // check for win
-  if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
+  if (this.checkForWin()) {
+    this.gameOver = true
+    return this.endGame(`Player ${this.currPlayer} won!`);
   }
   
   // check for tie
-  if (board.every(row => row.every(cell => cell))) {
-    return endGame('Tie!');
+  if (this.board.every(row => row.every(cell => cell))) {
+    return this.endGame('Tie!');
   }
     
   // switch players
-  currPlayer = currPlayer === 1 ? 2 : 1;
+  this.currPlayer = this.currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -149,9 +150,9 @@ function checkForWin() {
     return cells.every(
       ([y, x]) =>
         y >= 0 &&
-        y < HEIGHT &&
+        y < this.HEIGHT &&
         x >= 0 &&
-        x < WIDTH &&
+        x < this.WIDTH &&
         board[y][x] === currPlayer
     );
   }
