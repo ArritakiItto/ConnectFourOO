@@ -31,8 +31,8 @@ class Game {
 //     board.push(Array.from({ length: WIDTH }));
 //   }
 // }
-
-function makeBoard() {
+  
+makeBoard() {
   this.board = [];
   for (let y = 0; y < this.height; y++) {
     this.board.push(Array.from({ length: this.width }));
@@ -42,7 +42,7 @@ function makeBoard() {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
-function makeHtmlBoard() {
+makeHtmlBoard() {
   const board = document.getElementById('board');
   board.innerHtml = '';
 
@@ -79,7 +79,7 @@ function makeHtmlBoard() {
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
-function findSpotForCol(x) {
+findSpotForCol(x) {
   for (let y = this.HEIGHT - 1; y >= 0; y--) {
     if (!this.board[y][x]) {
       return y;
@@ -90,7 +90,7 @@ function findSpotForCol(x) {
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
-function placeInTable(y, x) {
+placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
   piece.classList.add(`p${this.currPlayer}`);
@@ -102,7 +102,7 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 
-function endGame(msg) {
+endGame(msg) {
   alert(msg);
   const top = document.querySelector("#column-top");
   top.removeEventListener("click", this.handleGameClick);
@@ -110,7 +110,7 @@ function endGame(msg) {
 
 /** handleClick: handle click of column top to play piece */
 
-function handleClick(evt) {
+handleClick(evt) {
   // get x from ID of clicked cell
   const x = +evt.target.id;
 
@@ -141,7 +141,7 @@ function handleClick(evt) {
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
-function checkForWin() {
+checkForWin() {
   function _win(cells) {
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
