@@ -14,7 +14,7 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 class Game {
   constructor(p1, p2, height = 6, width = 7) {
     this.players = [p1, p2];
-    this. height = height;
+    this.height = height;
     this.width = width;
     this.currPlayer = p1;
     this.makeBoard();
@@ -26,19 +26,13 @@ class Game {
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
 
-// function makeBoard() {
-//   for (let y = 0; y < HEIGHT; y++) {
-//     board.push(Array.from({ length: WIDTH }));
-//   }
-// }
-  
 makeBoard() {
   this.board = [];
-  for (let y = 0; y < this.height; y++) {
-    this.board.push(Array.from({ length: this.width }));
+  for (let y = 0; y < this.HEIGHT; y++) {
+    this.board.push(Array.from({ length: this.WIDTH }));
   }
 }
-
+  
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
@@ -49,10 +43,10 @@ makeHtmlBoard() {
   // make column tops (clickable area for adding a piece to that column)
   const top = document.createElement('tr');
   top.setAttribute('id', 'column-top');
-
+  //to remove event listern later
   this.handleGameClick = this.handleClick.bind(this);
 
-  top.addEventListener('click', this.handleClick);
+  top.addEventListener('click', this.handleGameClick);
   
 
   for (let x = 0; x < this.WIDTH; x++) {
@@ -93,7 +87,8 @@ findSpotForCol(x) {
 placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
-  piece.classList.add(`p${this.currPlayer}`);
+  piece.style.backgroundColor = this.currPlayer.color;
+  // piece.classList.add(`p${this.currPlayer}`);
   piece.style.top = -50 * (y + 2);
 
   const spot = document.getElementById(`${y}-${x}`);
@@ -142,23 +137,32 @@ handleClick(evt) {
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 checkForWin() {
-  function _win(cells) {
+  const _win = cells =>
+    cells.every(
+      ([y, x]) =>
+      y >= 0 &&
+      y < this.height &&
+      x >= 0 &&
+      x < this.width &&
+      this.board[y][x] === this.currPlayer
+  );
+  
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
 
-    return cells.every(
-      ([y, x]) =>
-        y >= 0 &&
-        y < this.HEIGHT &&
-        x >= 0 &&
-        x < this.WIDTH &&
-        board[y][x] === currPlayer
-    );
-  }
+  //   return cells.every(
+  //     ([y, x]) =>
+  //       y >= 0 &&
+  //       y < this.HEIGHT &&
+  //       x >= 0 &&
+  //       x < this.WIDTH &&
+  //       board[y][x] === currPlayer
+  //   );
+  // }
 
-  for (let y = 0; y < HEIGHT; y++) {
-    for (let x = 0; x < WIDTH; x++) {
+  for (let y = 0; y < this.HEIGHT; y++) {
+    for (let x = 0; x < this.WIDTH; x++) {
       // get "check list" of 4 cells (starting here) for each of the different
       // ways to win
       const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
@@ -175,7 +179,13 @@ checkForWin() {
   }
 }
 
-makeBoard();
-makeHtmlBoard();
-  
+class Player {
+  constructor(color) {
+    this.color = color;
+  }
 }
+
+document.getElementById('start-game').addEventListener('click', () => {
+  let p1 = new Player(document.getElementById('p1-color').value);
+  let p2 = new Player(document.getElementById('p2-color').value);
+});
