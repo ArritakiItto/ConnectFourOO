@@ -169,6 +169,7 @@ checkForWin() {
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
+        }
       }
     }
   }
