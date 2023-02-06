@@ -21,7 +21,7 @@ class Game {
     this.makeHtmlBoard();
     this.gameOver = false;
   }
-}
+
 /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
@@ -176,3 +176,5 @@ function checkForWin() {
 
 makeBoard();
 makeHtmlBoard();
+  
+}
